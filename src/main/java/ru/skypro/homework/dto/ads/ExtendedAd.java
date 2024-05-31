@@ -18,4 +18,15 @@ public class ExtendedAd {
 
     public ExtendedAd() {
     }
+
+    /**
+     *Конструктор для создания тестовых объектов
+     */
+    public ExtendedAd(int pk, String authorFirstName, String authorLastName, String description, String title) {
+        this.pk = pk;
+        this.authorFirstName = authorFirstName;
+        this.authorLastName = authorLastName;
+        this.description = description;
+        this.title = title;
+    }
 }

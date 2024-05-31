@@ -11,4 +11,9 @@ public class Ads {
 
     public Ads() {
     }
+
+    public Ads(int count, List<Ad> results) {
+        this.count = count;
+        this.results = results;
+    }
 }

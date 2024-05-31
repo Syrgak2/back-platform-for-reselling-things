@@ -15,4 +15,15 @@ public class Ad {
 
     public Ad() {
     }
+
+    /**
+     *Конструктор для создания тестовых объектов
+     */
+    public Ad(Long author, String image, int pk, int price, String title) {
+        this.author = author;
+        this.image = image;
+        this.pk = pk;
+        this.price = price;
+        this.title = title;
+    }
 }

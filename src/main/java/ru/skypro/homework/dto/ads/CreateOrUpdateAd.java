@@ -13,4 +13,10 @@ public class CreateOrUpdateAd {
 
     public CreateOrUpdateAd() {
     }
+
+    public CreateOrUpdateAd(String title, int price, String description) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+    }
 }
