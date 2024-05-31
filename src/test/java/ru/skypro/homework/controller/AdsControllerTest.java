@@ -3,12 +3,16 @@ package ru.skypro.homework.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.web.servlet.MockMvc;
 import ru.skypro.homework.dto.ads.Ad;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +23,6 @@ import static ru.skypro.homework.constants.Constants.*;
 @AutoConfigureTestDatabase
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class AdsControllerTest {
-
     @LocalServerPort
     private Integer port;
 
@@ -35,6 +38,7 @@ public class AdsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user@gmail.com", password = "password")
     public void saveAdsTest() {
 //        When
         ResponseEntity<Ad> response = testRestTemplate.postForEntity(
