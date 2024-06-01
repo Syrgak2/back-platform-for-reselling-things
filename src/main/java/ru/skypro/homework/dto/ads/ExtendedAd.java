@@ -3,7 +3,7 @@ package ru.skypro.homework.dto.ads;
 import lombok.Data;
 
 /**
- * DTA для передачи всю информации про объявление
+ * DTA для передачи всей информации про объявление
  */
 @Data
 public class ExtendedAd {
