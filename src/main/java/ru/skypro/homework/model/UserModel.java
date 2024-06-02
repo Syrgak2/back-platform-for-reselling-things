@@ -8,13 +8,15 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Entity
 public class UserModel {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private String username;
     private String email;
-    private PasswordEncoder passwordEncoder;
+    private String password;
     private String firstName;
     private String lastName;
     private String phone;
@@ -23,9 +25,11 @@ public class UserModel {
     @OneToOne
     @JoinColumn(name = "user_avatar_id")
     private Photo photo;
-    @OneToMany(mappedBy = "advertisement")
+
+    @OneToMany(mappedBy = "userModel")
     private Collection<AdModel> adModels;
-    @OneToMany(mappedBy = "comment")
+
+    @OneToMany(mappedBy = "userModel")
     private Collection<CommentModel> commentModels;
 
     public UserModel() {

@@ -13,7 +13,7 @@ public class UserMapper {
 
         User user = new User();
 
-        user.setId((int) userModel.getId());
+        user.setId(userModel.getId());
         user.setEmail(user.getEmail());
         user.setFirstName(userModel.getFirstName());
         user.setLastName(userModel.getLastName());

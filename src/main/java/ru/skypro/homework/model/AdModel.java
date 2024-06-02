@@ -6,17 +6,18 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Entity
 public class AdModel {
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String title;
     private String description;
     private int price;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel userModel;
-    @OneToMany(mappedBy = "advertisement")
+    @OneToMany(mappedBy = "adModel")
     private Collection<CommentModel> commentModels;
     @OneToOne
     @JoinColumn(name = "photo_id")
