@@ -4,10 +4,10 @@ import lombok.Data;
 
 @Data
 public class Comment {
-    private int author;
+    private Long author;
     private String authorImage;
     private String authorFirstName;
     private int createdAt;
-    private int pk;
+    private Long pk;
     private String text;
 }

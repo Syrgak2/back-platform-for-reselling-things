@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class ExtendedAd {
-    private int pk;
+    private Long pk;
     private String authorFirstName;
     private String authorLastName;
     private String description;
