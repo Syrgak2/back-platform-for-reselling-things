@@ -21,7 +21,7 @@ public class AdModel {
     private Collection<CommentModel> commentModels;
     @OneToOne
     @JoinColumn(name = "photo_id")
-    private Photo Photo;
+    private AdPhoto AdPhoto;
 
     public AdModel() {
     }

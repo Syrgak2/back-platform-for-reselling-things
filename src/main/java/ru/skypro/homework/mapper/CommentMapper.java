@@ -15,7 +15,7 @@ public class CommentMapper {
         Comment comment = new Comment();
 
         comment.setAuthor(userModel.getId());
-        comment.setAuthorImage(String.valueOf(userModel.getPhoto().getImage()));
+        comment.setAuthorImage(String.valueOf(userModel.getUserAvatar().getImage()));
         comment.setAuthorFirstName(userModel.getFirstName());
         comment.setCreatedAt(comment.getCreatedAt());
         comment.setPk(commentModel.getId());

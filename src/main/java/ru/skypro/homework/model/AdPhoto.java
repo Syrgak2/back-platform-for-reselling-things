@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class Photo {
+public class AdPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -16,7 +16,7 @@ public class Photo {
     private String mediaType;
     private byte image;
 
-    public Photo() {
+    public AdPhoto() {
     }
 
 }

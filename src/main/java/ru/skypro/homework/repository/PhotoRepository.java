@@ -1,8 +1,8 @@
 package ru.skypro.homework.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.skypro.homework.model.Photo;
+import ru.skypro.homework.model.AdPhoto;
 
-public interface PhotoRepository extends JpaRepository<Photo, Long> {
+public interface PhotoRepository extends JpaRepository<AdPhoto, Long> {
 
 }

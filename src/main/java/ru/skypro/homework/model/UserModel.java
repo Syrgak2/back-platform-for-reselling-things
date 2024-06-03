@@ -1,7 +1,7 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.User;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
@@ -24,7 +24,7 @@ public class UserModel {
 
     @OneToOne
     @JoinColumn(name = "user_avatar_id")
-    private Photo photo;
+    private UserAvatar userAvatar;
 
     @OneToMany(mappedBy = "userModel")
     private Collection<AdModel> adModels;

@@ -18,7 +18,7 @@ public class UserMapper {
         user.setFirstName(userModel.getFirstName());
         user.setLastName(userModel.getLastName());
         user.setPhone(userModel.getPhone());
-        user.setImage(String.valueOf(userModel.getPhoto().getImage()));
+        user.setImage(String.valueOf(userModel.getUserAvatar().getImage()));
         user.setRole(userModel.getRole());
         return user;
     }
