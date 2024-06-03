@@ -1,18 +1,18 @@
 package ru.skypro.homework.mapper;
 
-import ru.skypro.homework.dto.comment.Comment;
+import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
 import ru.skypro.homework.model.CommentModel;
 import ru.skypro.homework.model.UserModel;
 
 public class CommentMapper {
 
-    public static Comment toCommentDto(CommentModel commentModel, UserModel userModel) {
+    public static CommentDTO toCommentDto(CommentModel commentModel, UserModel userModel) {
         if (commentModel == null) {
             return null;
         }
 
-        Comment comment = new Comment();
+        CommentDTO comment = new CommentDTO();
 
         comment.setAuthor(userModel.getId());
         comment.setAuthorImage(String.valueOf(userModel.getUserAvatar().getImage()));
