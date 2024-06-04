@@ -9,7 +9,7 @@ import lombok.Data;
 public class Ad {
     private Long author;
     private String image;
-    private int pk;
+    private Long pk;
     private int price;
     private String title;
 
