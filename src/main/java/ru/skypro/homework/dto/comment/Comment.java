@@ -11,4 +11,6 @@ public class Comment {
     private Long pk;
     private String text;
 
+    public Comment() {
+    }
 }

@@ -11,11 +11,11 @@ public class CommentModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int author;
+    private Long author;
     private String authorImage;
     private String authorFirstName;
     private int createdAt;
-    private int pk;
+    private Long pk;
     private String text;
 
     @ManyToOne
