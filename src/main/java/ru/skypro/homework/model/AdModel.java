@@ -18,7 +18,7 @@ public class AdModel {
     @JoinColumn(name = "user_id")
     private UserModel userModel;
     @OneToMany(mappedBy = "adModel")
-    private Collection<Comment> comments;
+    private Collection<CommentModel> commentModels;
     @OneToOne
     @JoinColumn(name = "photo_id")
     private AdPhoto AdPhoto;

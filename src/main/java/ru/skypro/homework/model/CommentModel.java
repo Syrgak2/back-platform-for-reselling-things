@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Comment {
+public class CommentModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -26,7 +26,7 @@ public class Comment {
     @JoinColumn(name = "uaer_id")
     private UserModel userModel;
 
-    public Comment() {
+    public CommentModel() {
 
     }
 }
