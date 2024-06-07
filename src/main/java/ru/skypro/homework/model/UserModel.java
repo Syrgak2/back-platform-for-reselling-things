@@ -30,7 +30,7 @@ public class UserModel {
     private Collection<AdModel> adModels;
 
     @OneToMany(mappedBy = "userModel")
-    private Collection<CommentModel> commentModels;
+    private Collection<Comment> comment;
 
     public UserModel() {
     }
