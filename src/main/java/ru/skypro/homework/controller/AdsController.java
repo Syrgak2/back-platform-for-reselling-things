@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ads.ExtendedAd;
 import ru.skypro.homework.dto.ads.Ads;
-import ru.skypro.homework.dto.ads.Ad;
+import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
 
 @CrossOrigin(value = "http://localhost:3000")
@@ -16,10 +16,10 @@ import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
 public class AdsController {
 
     @PostMapping
-    public ResponseEntity<Ad> saveAds(@RequestBody CreateOrUpdateAd createOrUpdateAd) {
+    public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAd createOrUpdateAd) {
         try {
-            Ad ad = new Ad();
-            return ResponseEntity.ok(ad);
+            AdDTO adDTO = new AdDTO();
+            return ResponseEntity.ok(adDTO);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -47,8 +47,8 @@ public class AdsController {
     public ResponseEntity<?> deleteAds(@PathVariable Long id) {
         try {
 //            example
-            Ad ad = new Ad();
-            if (ad == null) {
+            AdDTO adDTO = new AdDTO();
+            if (adDTO == null) {
                 return ResponseEntity.notFound().build();
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -60,13 +60,13 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Ad> editeAd(@RequestBody CreateOrUpdateAd ad) {
+    public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAd ad) {
         try {
-            Ad ad1 = new Ad();
-            if (ad1 == null) {
+            AdDTO adDTO1 = new AdDTO();
+            if (adDTO1 == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(ad1);
+            return ResponseEntity.ok(adDTO1);
         } catch (SecurityException securityException) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {

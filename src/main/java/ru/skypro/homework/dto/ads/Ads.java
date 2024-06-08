@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class Ads {
     private int count;
-    private List<Ad> results;
+    private List<AdDTO> results;
 
     public Ads() {
     }

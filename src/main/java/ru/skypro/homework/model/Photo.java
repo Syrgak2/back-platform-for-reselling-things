@@ -6,17 +6,17 @@ import javax.persistence.*;
 
 @Data
 @Entity
-public class AdPhoto {
+public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String filePath;
     private long  fileSize;
     private String mediaType;
-    private byte image;
+    @Lob
+    private byte[] image;
 
-    public AdPhoto() {
+    public Photo() {
     }
 
 }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class CommentModel {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,13 +21,13 @@ public class CommentModel {
 
     @ManyToOne
     @JoinColumn(name = "ad_id")
-    private AdModel adModel;
+    private Ad ad;
 
     @ManyToOne
-    @JoinColumn(name = "uaer_id")
-    private UserModel userModel;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public CommentModel() {
+    public Comment() {
 
     }
 }

@@ -7,22 +7,23 @@ import java.util.Collection;
 
 @Data
 @Entity
-public class AdModel {
+public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String title;
     private String description;
     private int price;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserModel userModel;
-    @OneToMany(mappedBy = "adModel")
-    private Collection<CommentModel> commentModels;
+    private User user;
+    @OneToMany(mappedBy = "ad")
+    private Collection<Comment> comments;
     @OneToOne
     @JoinColumn(name = "photo_id")
-    private AdPhoto AdPhoto;
+    private Photo Photo;
 
-    public AdModel() {
+    public Ad() {
     }
 }
