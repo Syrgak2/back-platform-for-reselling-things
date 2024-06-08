@@ -22,7 +22,7 @@ public class Ad {
     private Collection<Comment> comments;
     @OneToOne
     @JoinColumn(name = "photo_id")
-    private Photo Photo;
+    private Photo image;
 
     public Ad() {
     }
