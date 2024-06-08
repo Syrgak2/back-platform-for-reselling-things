@@ -8,7 +8,8 @@ import java.util.Collection;
 
 @Data
 @Entity
-public class UserModel {
+@Table(name = "users")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,15 +23,15 @@ public class UserModel {
     private Role role;
 
     @OneToOne
-    @JoinColumn(name = "user_avatar_id")
-    private UserAvatar userAvatar;
+    @JoinColumn(name = "photo_id")
+    private Photo userAvatar;
 
-    @OneToMany(mappedBy = "userModel")
-    private Collection<AdModel> adModels;
+    @OneToMany(mappedBy = "user")
+    private Collection<Ad> ads;
 
-    @OneToMany(mappedBy = "userModel")
-    private Collection<CommentModel> commentModel;
+    @OneToMany(mappedBy = "user")
+    private Collection<Comment> comment;
 
-    public UserModel() {
+    public User() {
     }
 }

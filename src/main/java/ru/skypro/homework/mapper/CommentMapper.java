@@ -1,17 +1,16 @@
 package ru.skypro.homework.mapper;
 
-import ru.skypro.homework.dto.comment.Comment;
 import ru.skypro.homework.dto.comment.Comments;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
-import ru.skypro.homework.model.CommentModel;
+import ru.skypro.homework.model.Comment;
 
 public class CommentMapper {
-    public static Comment toComment(CommentModel commentModel){
+    public static ru.skypro.homework.dto.comment.Comment toComment(Comment commentModel){
         if (commentModel == null) {
             return null;
         }
 
-        Comment comment = new Comment();
+        ru.skypro.homework.dto.comment.Comment comment = new ru.skypro.homework.dto.comment.Comment();
 
         comment.setAuthor(comment.getAuthor());
         comment.setAuthorImage(comment.getAuthorImage());
@@ -22,8 +21,8 @@ public class CommentMapper {
         return comment;
     }
 
-    public static Comments toComments(CommentModel commentModel){
-        if (commentModel == null){
+    public static Comments toComments(Comment comment){
+        if (comment == null){
             return null;
         }
 
@@ -34,7 +33,7 @@ public class CommentMapper {
         return comments;
     }
 
-    public static CreateOrUpdateComment createOrUpdateComment(CommentModel commentModel){
+    public static CreateOrUpdateComment createOrUpdateComment(Comment commentModel){
         if (commentModel == null){
             return null;
         }

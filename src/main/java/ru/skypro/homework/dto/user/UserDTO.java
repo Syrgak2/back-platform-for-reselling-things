@@ -4,7 +4,7 @@ import lombok.Data;
 import ru.skypro.homework.dto.Role;
 
 @Data
-public class User {
+public class UserDTO {
     private Long id;
     private String email;
     private String firstName;

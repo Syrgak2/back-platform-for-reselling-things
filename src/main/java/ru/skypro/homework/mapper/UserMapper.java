@@ -1,17 +1,17 @@
 package ru.skypro.homework.mapper;
 
-import ru.skypro.homework.dto.user.User;
-import ru.skypro.homework.model.UserModel;
+import ru.skypro.homework.dto.user.UserDTO;
+import ru.skypro.homework.model.User;
 
 public class UserMapper {
 
 
-    public static User toUserDto(UserModel userModel) {
+    public static UserDTO toUserDto(User userModel) {
         if (userModel == null) {
             return null;
         }
 
-        User user = new User();
+        UserDTO user = new UserDTO();
 
         user.setId(userModel.getId());
         user.setEmail(user.getEmail());
