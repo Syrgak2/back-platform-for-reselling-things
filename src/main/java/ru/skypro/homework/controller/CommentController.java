@@ -6,10 +6,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.Comment;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
+import ru.skypro.homework.service.CommentService;
 
 @RestController
 @RequestMapping("/ads")
 public class CommentController {
+
+    private CommentService commentService;
 
     @Operation(
             summary = "Получение комментариев обЪявления",
@@ -22,7 +25,7 @@ public class CommentController {
           if (comment == null){
               return ResponseEntity.notFound().build();
           }
-          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+          return ResponseEntity.ok(commentService.getComments(id).getBody());
       } catch (Exception e) {
           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
@@ -36,7 +39,7 @@ public class CommentController {
     public ResponseEntity<?> addComments(@PathVariable(required = false, name = "id обЪявления") Long id,
                                          @RequestBody CreateOrUpdateComment comment){
         try {
-            return ResponseEntity.ok(comment);
+            return ResponseEntity.ok(commentService.addComments(id));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -56,7 +59,7 @@ public class CommentController {
             if (commentId == null){
                 return ResponseEntity.notFound().build();
             }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.ok(commentService.removeComments(adId, commentId));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -76,7 +79,7 @@ public class CommentController {
             if (commentId == null){
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(comment);
+            return ResponseEntity.ok(commentService.patchComments(adId, commentId, comment));
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
