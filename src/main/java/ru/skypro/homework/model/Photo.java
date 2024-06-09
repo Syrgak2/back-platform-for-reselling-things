@@ -13,6 +13,7 @@ public class Photo {
 
     private long  fileSize;
     private String mediaType;
+    private String url;
     @Lob
     private byte[] image;
 

@@ -1,24 +1,25 @@
 package ru.skypro.homework.mapper;
 
+import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.Comments;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
 import ru.skypro.homework.model.Comment;
 
 public class CommentMapper {
-    public static ru.skypro.homework.dto.comment.Comment toComment(Comment commentModel){
+    public static CommentDTO toComment(Comment commentModel){
         if (commentModel == null) {
             return null;
         }
 
-        ru.skypro.homework.dto.comment.Comment comment = new ru.skypro.homework.dto.comment.Comment();
+        CommentDTO commentDTO = new CommentDTO();
 
-        comment.setAuthor(comment.getAuthor());
-        comment.setAuthorImage(comment.getAuthorImage());
-        comment.setAuthorFirstName(comment.getAuthorFirstName());
-        comment.setCreatedAt(comment.getCreatedAt());
-        comment.setPk(comment.getPk());
-        comment.setText(comment.getText());
-        return comment;
+        commentDTO.setAuthor(commentDTO.getAuthor());
+        commentDTO.setAuthorImage(commentDTO.getAuthorImage());
+        commentDTO.setAuthorFirstName(commentDTO.getAuthorFirstName());
+        commentDTO.setCreatedAt(commentDTO.getCreatedAt());
+        commentDTO.setPk(commentDTO.getPk());
+        commentDTO.setText(commentDTO.getText());
+        return commentDTO;
     }
 
     public static Comments toComments(Comment comment){
