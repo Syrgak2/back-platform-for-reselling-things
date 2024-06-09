@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.model.Photo;
 import ru.skypro.homework.repository.PhotoRepository;
-import ru.skypro.homework.service.PhotoService;
+import ru.skypro.homework.service.entity_service.PhotoService;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;

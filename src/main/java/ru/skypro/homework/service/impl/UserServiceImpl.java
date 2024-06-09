@@ -6,8 +6,9 @@ import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.model.Photo;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.PhotoService;
-import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.entity_service.CheckService;
+import ru.skypro.homework.service.entity_service.PhotoService;
+import ru.skypro.homework.service.entity_service.UserService;
 
 import java.io.IOException;
 
@@ -16,11 +17,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PhotoService photoService;
+    private final CheckService checkService;
 
-    public UserServiceImpl(UserRepository userRepository, PhotoService photoService) {
+    public UserServiceImpl(UserRepository userRepository, PhotoService photoService, CheckService checkService) {
         this.userRepository = userRepository;
         this.photoService = photoService;
+        this.checkService = checkService;
     }
+
 
     @Override
     public User find(Long id) {
@@ -52,6 +56,24 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return true;
+    }
+
+    @Override
+    public User registerUser(String username,
+                             String email,
+                             String password,
+                             String firstName,
+                             String lastName,
+                             String phone
+    ) {
+        checkService.checkName(firstName);
+        checkService.checkName(lastName);
+        checkService.checkPhoneNumber(phone);
+        phone = checkService.validatePhoneNumber(phone);
+        checkService.checkEmail(email);
+        User user = new User(username, email, password, firstName,lastName,phone);
+        checkService.checkUserAlreadyExist(userRepository.findAll(), user);
+        return userRepository.save(user);
     }
 
 }

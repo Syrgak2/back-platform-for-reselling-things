@@ -3,7 +3,7 @@ package ru.skypro.homework.service.impl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
-import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.entity_service.CommentService;
 
 @Service
 public class CommentServiceImpl implements CommentService {

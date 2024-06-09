@@ -11,7 +11,8 @@ import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.user.UpdateUser;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.exception.NotFoundException;
-import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.model.User;
+import ru.skypro.homework.service.entity_service.UserService;
 
 import java.io.IOException;
 
@@ -56,5 +57,13 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
+    @PostMapping(value = "/register")
+    public User register(String username,
+                         String email,
+                         String password,
+                         String firstName,
+                         String lastName,
+                         String phone){
+        return userService.registerUser(username,email,password,firstName,lastName,phone);
+    }
 }

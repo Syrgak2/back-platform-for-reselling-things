@@ -1,4 +1,4 @@
-package ru.skypro.homework.service;
+package ru.skypro.homework.service.entity_service;
 
 import org.springframework.http.ResponseEntity;
 import ru.skypro.homework.dto.comment.Comment;

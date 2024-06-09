@@ -1,4 +1,4 @@
-package ru.skypro.homework.service;
+package ru.skypro.homework.service.entity_service;
 
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.model.Photo;

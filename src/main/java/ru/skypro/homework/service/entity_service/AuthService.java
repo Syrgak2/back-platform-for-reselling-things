@@ -1,4 +1,4 @@
-package ru.skypro.homework.service;
+package ru.skypro.homework.service.entity_service;
 
 import ru.skypro.homework.dto.user.Register;
 

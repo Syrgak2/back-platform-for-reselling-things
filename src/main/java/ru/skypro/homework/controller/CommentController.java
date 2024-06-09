@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.Comment;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
-import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.entity_service.CommentService;
 
 @RestController
 @RequestMapping("/ads")
