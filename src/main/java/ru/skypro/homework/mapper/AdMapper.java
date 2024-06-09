@@ -23,7 +23,7 @@ public interface AdMapper {
     @Mapping(source = "user.authorLastName", target = "authorLastName")
     @Mapping(source = "user.email", target = "email")
     @Mapping(source = "user.phone", target = "phone")
-    ExtendedAd AdToExtendAd(Ad ad, User user);
+    ExtendedAd AdToExtendAd(Ad ad);
 
     @Mapping(target = "id", ignore = true)
     Ad createOrUpdateAdToAd(CreateOrUpdateAd ad);
