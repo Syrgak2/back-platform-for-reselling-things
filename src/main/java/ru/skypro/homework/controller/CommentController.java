@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.comment.Comment;
+import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
 import ru.skypro.homework.service.CommentService;
 
@@ -21,8 +21,8 @@ public class CommentController {
     @GetMapping("/{id}/comments")
     public ResponseEntity<?> getComments(@PathVariable(required = false, name = "id обЪявления") Long id){
       try {
-          Comment comment = new Comment();
-          if (comment == null){
+          CommentDTO commentDTO = new CommentDTO();
+          if (commentDTO == null){
               return ResponseEntity.notFound().build();
           }
           return ResponseEntity.ok(commentService.getComments(id).getBody());
@@ -52,7 +52,7 @@ public class CommentController {
     public ResponseEntity<?> removeComments(@PathVariable(required = false, name = "id обЪявления") Long adId,
                                             @PathVariable(required = false, name = "id комментария") Long commentId){
         try {
-            Comment comment = new Comment();
+            CommentDTO commentDTO = new CommentDTO();
             if (adId == null){
                 return ResponseEntity.notFound().build();
             }
