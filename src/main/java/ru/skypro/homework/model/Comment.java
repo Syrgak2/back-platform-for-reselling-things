@@ -1,12 +1,14 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Getter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

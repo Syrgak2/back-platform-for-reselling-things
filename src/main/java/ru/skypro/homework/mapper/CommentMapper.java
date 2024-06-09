@@ -4,7 +4,7 @@ import ru.skypro.homework.dto.comment.Comments;
 import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
 import ru.skypro.homework.model.Comment;
 
-public class CommentMapper {
+public interface CommentMapper {
     public static ru.skypro.homework.dto.comment.Comment toComment(Comment commentModel){
         if (commentModel == null) {
             return null;

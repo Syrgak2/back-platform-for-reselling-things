@@ -1,11 +1,13 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Getter
 @Entity
 public class Ad {
     @Id
