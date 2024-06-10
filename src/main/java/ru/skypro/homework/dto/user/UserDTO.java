@@ -10,6 +10,7 @@ import ru.skypro.homework.dto.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+
     @Schema(description = "ID пользователя")
     private Integer id;
 

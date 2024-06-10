@@ -8,7 +8,6 @@ import ru.skypro.homework.dto.Role;
 import javax.persistence.*;
 import java.util.Collection;
 
-import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Data
@@ -17,7 +16,7 @@ import static javax.persistence.EnumType.STRING;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Integer id;
 
@@ -34,9 +33,9 @@ public class User {
     private String lastName;
 
     @Column(name = "phone_number")
-    private String phoneNumber;
+    private String phone;
 
-    @Enumerated(STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
 
