@@ -8,9 +8,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
+import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UpdateUser;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.exception.NotFoundException;
+import ru.skypro.homework.model.User;
 import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
@@ -22,6 +24,10 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+    @PostMapping("/register")
+    public User userRegister(@RequestBody Register register) {
+
     }
 
     @PostMapping("/set_password")
