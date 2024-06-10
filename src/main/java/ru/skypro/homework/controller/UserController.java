@@ -25,10 +25,6 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    @PostMapping("/register")
-    public User userRegister(@RequestBody Register register) {
-
-    }
 
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword) {
