@@ -1,12 +1,14 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
+import lombok.Getter;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Getter
 @Entity
 @Table(name = "users")
 public class User {

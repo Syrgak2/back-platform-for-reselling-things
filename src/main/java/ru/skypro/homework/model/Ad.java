@@ -1,11 +1,13 @@
 package ru.skypro.homework.model;
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Data
+@Getter
 @Entity
 public class Ad {
     @Id
@@ -22,7 +24,7 @@ public class Ad {
     private Collection<Comment> comments;
     @OneToOne
     @JoinColumn(name = "photo_id")
-    private Photo Photo;
+    private Photo image;
 
     public Ad() {
     }

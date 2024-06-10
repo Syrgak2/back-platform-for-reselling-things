@@ -1,57 +1,21 @@
 package ru.skypro.homework.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.user.Register;
 import ru.skypro.homework.dto.user.UpdateUser;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.model.User;
+@Mapper
+public interface UserMapper {
 
-public class UserMapper {
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mapping(source = "userAvatar.url", target = "image")
+    UserDTO UsertoUserDto(User userModel);
 
-    public static UserDTO UsertoUserDto(User userModel) {
-        if (userModel == null) {
-            return null;
-        }
-
-        UserDTO user = new UserDTO();
-
-        user.setId(userModel.getId());
-        user.setEmail(user.getEmail());
-        user.setFirstName(userModel.getFirstName());
-        user.setLastName(userModel.getLastName());
-        user.setPhone(userModel.getPhone());
-        user.setImage(userModel.getUserAvatar().getUrl());
-        user.setRole(userModel.getRole());
-        return user;
-    }
-
-    public static User updateUserToUser(UpdateUser user) {
-        if (user == null) {
-            return null;
-        }
-
-        User userModel = new User();
-
-        userModel.setFirstName(userModel.getFirstName());
-        userModel.setLastName(user.getLastName());
-        userModel.setPhone(user.getPhone());
-        return userModel;
-    }
-
-    public static User registerToUser(Register register) {
-        if (register == null) {
-            return null;
-        }
-
-        User user = new User();
-
-        user.setUsername(register.getUsername());
-        user.setPassword(register.getPassword());
-        user.setFirstName(register.getFirstName());
-        user.setLastName(register.getLastName());
-        user.setPhone(register.getPhone());
-        user.setRole(register.getRole());
-        return user;
-    }
+    User updateUserToUser(UpdateUser user);
+    User registerToUser(Register register);
 
 }
