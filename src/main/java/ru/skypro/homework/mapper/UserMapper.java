@@ -3,8 +3,8 @@ package ru.skypro.homework.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import ru.skypro.homework.dto.user.Register;
-import ru.skypro.homework.dto.user.UpdateUser;
+import ru.skypro.homework.dto.auth.RegisterDTO;
+import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.model.User;
 @Mapper
@@ -15,7 +15,8 @@ public interface UserMapper {
     @Mapping(source = "userAvatar.url", target = "image")
     UserDTO UsertoUserDto(User userModel);
 
-    User updateUserToUser(UpdateUser user);
-    User registerToUser(Register register);
+    User updateUserToUser(UpdateUserDTO user);
+
+    User registerToUser(RegisterDTO register);
 
 }

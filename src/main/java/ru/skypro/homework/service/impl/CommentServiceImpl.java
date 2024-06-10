@@ -2,7 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 
 @Service
@@ -26,7 +26,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
    @Override
-     public ResponseEntity<?> patchComments(Long adId, Long commentId, CreateOrUpdateComment comment){
+     public ResponseEntity<?> patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment){
        String ok = "okeRemove";
        return ResponseEntity.ok(ok + adId + commentId + comment);
 

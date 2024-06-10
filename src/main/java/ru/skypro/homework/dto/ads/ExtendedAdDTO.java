@@ -6,7 +6,7 @@ import lombok.Data;
  * DTA для передачи всей информации про объявление
  */
 @Data
-public class ExtendedAd {
+public class ExtendedAdDTO {
     private Long pk;
     private String authorFirstName;
     private String authorLastName;
@@ -16,6 +16,6 @@ public class ExtendedAd {
     private int price;
     private String title;
 
-    public ExtendedAd() {
+    public ExtendedAdDTO() {
     }
 }

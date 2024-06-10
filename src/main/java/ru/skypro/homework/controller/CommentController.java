@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
-import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 
 @RestController
@@ -37,7 +37,7 @@ public class CommentController {
     )
     @PostMapping("/{id}/comments")
     public ResponseEntity<?> addComments(@PathVariable(required = false, name = "id обЪявления") Long id,
-                                         @RequestBody CreateOrUpdateComment comment){
+                                         @RequestBody CreateOrUpdateCommentDTO comment){
         try {
             return ResponseEntity.ok(commentService.addComments(id));
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class CommentController {
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> patchComments(@PathVariable(required = false, name = "id обЪявления") Long adId,
                                            @PathVariable(required = false, name = "id комментария") Long commentId,
-                                           @RequestBody CreateOrUpdateComment comment){
+                                           @RequestBody CreateOrUpdateCommentDTO comment){
         try {
             if (adId == null){
                 return ResponseEntity.notFound().build();

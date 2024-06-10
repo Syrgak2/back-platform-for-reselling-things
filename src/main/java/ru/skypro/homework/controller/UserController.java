@@ -7,8 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.user.UpdateUser;
+import ru.skypro.homework.dto.auth.NewPasswordDTO;
+import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.service.UserService;
@@ -25,16 +25,16 @@ public class UserController {
     }
 
     @PostMapping("/set_password")
-    public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword) {
-        return ResponseEntity.ok(new NewPassword());
+    public ResponseEntity<?> setPassword(@RequestBody NewPasswordDTO newPassword) {
+        return ResponseEntity.ok(new NewPasswordDTO());
     }
     @GetMapping("/me")
     public ResponseEntity<?> getUser() {
         return ResponseEntity.ok(new UserDTO());
     }
     @PatchMapping("/me")
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUser updateUser) {
-        return ResponseEntity.ok(new UpdateUser());
+    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUser) {
+        return ResponseEntity.ok(new UpdateUserDTO());
     }
 
     /**

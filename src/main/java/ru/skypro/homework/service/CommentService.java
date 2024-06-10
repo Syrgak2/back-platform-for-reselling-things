@@ -1,7 +1,7 @@
 package ru.skypro.homework.service;
 
 import org.springframework.http.ResponseEntity;
-import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 
 public interface CommentService {
 
@@ -11,5 +11,5 @@ public interface CommentService {
 
     ResponseEntity<?> removeComments(Long adId, Long commentId);
 
-    ResponseEntity<?> patchComments(Long adId, Long commentId, CreateOrUpdateComment comment);
+    ResponseEntity<?> patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment);
 }

@@ -6,11 +6,11 @@ import lombok.Data;
  * DTO класс для добавления и обновление информации об объявление
  */
 @Data
-public class CreateOrUpdateAd {
+public class CreateOrUpdateAdDTO {
     private String title;
     private int price;
     private String description;
 
-    public CreateOrUpdateAd() {
+    public CreateOrUpdateAdDTO() {
     }
 }

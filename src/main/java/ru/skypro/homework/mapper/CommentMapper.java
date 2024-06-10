@@ -1,8 +1,8 @@
 package ru.skypro.homework.mapper;
 
 import ru.skypro.homework.dto.comment.CommentDTO;
-import ru.skypro.homework.dto.comment.Comments;
-import ru.skypro.homework.dto.comment.CreateOrUpdateComment;
+import ru.skypro.homework.dto.comment.CommentsDTO;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.model.Comment;
 
 public class CommentMapper {
@@ -22,24 +22,24 @@ public class CommentMapper {
         return commentDTO;
     }
 
-    public static Comments toComments(Comment comment){
+    public static CommentsDTO toComments(Comment comment){
         if (comment == null){
             return null;
         }
 
-        Comments comments = new Comments();
+        CommentsDTO comments = new CommentsDTO();
 
         comments.setCount(comments.getCount());
         comments.setResults(comments.getResults());
         return comments;
     }
 
-    public static CreateOrUpdateComment createOrUpdateComment(Comment commentModel){
+    public static CreateOrUpdateCommentDTO createOrUpdateComment(Comment commentModel){
         if (commentModel == null){
             return null;
         }
 
-        CreateOrUpdateComment comment = new CreateOrUpdateComment();
+        CreateOrUpdateCommentDTO comment = new CreateOrUpdateCommentDTO();
 
         comment.setText(comment.getText());
         return comment;

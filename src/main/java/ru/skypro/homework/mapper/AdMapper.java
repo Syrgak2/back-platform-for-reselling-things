@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.ads.AdDTO;
-import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ads.ExtendedAd;
+import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
+import ru.skypro.homework.dto.ads.ExtendedAdDTO;
 import ru.skypro.homework.model.Ad;
 @Mapper
 public interface AdMapper {
@@ -22,7 +22,7 @@ public interface AdMapper {
     @Mapping(source = "user.lastName", target = "authorLastName")
     @Mapping(source = "user.email", target = "email")
     @Mapping(source = "user.phone", target = "phone")
-    ExtendedAd AdToExtendAd(Ad ad);
+    ExtendedAdDTO AdToExtendAd(Ad ad);
 
-    Ad createOrUpdateAdToAd(CreateOrUpdateAd ad);
+    Ad createOrUpdateAdToAd(CreateOrUpdateAdDTO ad);
 }

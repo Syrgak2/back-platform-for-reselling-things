@@ -5,10 +5,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.ads.ExtendedAd;
-import ru.skypro.homework.dto.ads.Ads;
+import ru.skypro.homework.dto.ads.ExtendedAdDTO;
+import ru.skypro.homework.dto.ads.AdsDTO;
 import ru.skypro.homework.dto.ads.AdDTO;
-import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
+import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -16,7 +16,7 @@ import ru.skypro.homework.dto.ads.CreateOrUpdateAd;
 public class AdsController {
 
     @PostMapping
-    public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAd createOrUpdateAd) {
+    public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAdDTO createOrUpdateAd) {
         try {
             AdDTO adDTO = new AdDTO();
             return ResponseEntity.ok(adDTO);
@@ -26,18 +26,18 @@ public class AdsController {
     }
 
     @GetMapping
-    public ResponseEntity<Ads> getAllAds() {
-        return ResponseEntity.ok(new Ads());
+    public ResponseEntity<AdsDTO> getAllAds() {
+        return ResponseEntity.ok(new AdsDTO());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAd> responseAds(@PathVariable Long id) {
+    public ResponseEntity<ExtendedAdDTO> responseAds(@PathVariable Long id) {
         try {
-            ExtendedAd extendedAd = new ExtendedAd();
+            ExtendedAdDTO extendedAd = new ExtendedAdDTO();
             if (extendedAd == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(new ExtendedAd());
+            return ResponseEntity.ok(new ExtendedAdDTO());
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -60,7 +60,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAd ad) {
+    public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAdDTO ad) {
         try {
             AdDTO adDTO1 = new AdDTO();
             if (adDTO1 == null) {
@@ -76,9 +76,9 @@ public class AdsController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Ads> getUserAds() {
+    public ResponseEntity<AdsDTO> getUserAds() {
         try {
-            return ResponseEntity.ok(new Ads());
+            return ResponseEntity.ok(new AdsDTO());
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
