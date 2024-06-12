@@ -1,47 +1,27 @@
 package ru.skypro.homework.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.model.Comment;
 
-public class CommentMapper {
-    public static CommentDTO toComment(Comment commentModel){
-        if (commentModel == null) {
-            return null;
-        }
+import java.util.Collection;
+import java.util.List;
 
-        CommentDTO commentDTO = new CommentDTO();
+@Mapper
+public interface CommentMapper {
 
-        commentDTO.setAuthor(commentDTO.getAuthor());
-        commentDTO.setAuthorImage(commentDTO.getAuthorImage());
-        commentDTO.setAuthorFirstName(commentDTO.getAuthorFirstName());
-        commentDTO.setCreatedAt(commentDTO.getCreatedAt());
-        commentDTO.setPk(commentDTO.getPk());
-        commentDTO.setText(commentDTO.getText());
-        return commentDTO;
-    }
+    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
-    public static CommentsDTO toComments(Comment comment){
-        if (comment == null){
-            return null;
-        }
+    @Mapping(source = "id", target = "pk")
+    @Mapping(source = "user.id", target = "author")
+    @Mapping(source = "user.userAvatar.url", target = "authorImage")
+    @Mapping(source = "user.firstName", target = "authorFirstName")
+   CommentDTO toCommentDTO(Comment comment);
 
-        CommentsDTO comments = new CommentsDTO();
 
-        comments.setCount(comments.getCount());
-        comments.setResults(comments.getResults());
-        return comments;
-    }
-
-    public static CreateOrUpdateCommentDTO createOrUpdateComment(Comment commentModel){
-        if (commentModel == null){
-            return null;
-        }
-
-        CreateOrUpdateCommentDTO comment = new CreateOrUpdateCommentDTO();
-
-        comment.setText(comment.getText());
-        return comment;
-    }
+    Comment createOrUpdateToComment(CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
 }
