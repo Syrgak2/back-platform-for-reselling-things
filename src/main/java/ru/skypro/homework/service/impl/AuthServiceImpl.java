@@ -7,25 +7,24 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.auth.RegisterDTO;
 import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.userDetails.CustomUserDetails;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserDetailsManager manager;
     private final PasswordEncoder encoder;
+    private CustomUserDetails userDetails;
 
-    public AuthServiceImpl(UserDetailsManager manager,
-                           PasswordEncoder passwordEncoder) {
-        this.manager = manager;
+    public AuthServiceImpl(PasswordEncoder passwordEncoder,
+                           CustomUserDetails userDetails) {
+        this.userDetails = userDetails;
         this.encoder = passwordEncoder;
     }
 
     @Override
     public boolean login(String userName, String password) {
-        if (!manager.userExists(userName)) {
-            return false;
-        }
-        UserDetails userDetails = manager.loadUserByUsername(userName);
+        userDetails.loadUserByUsername(userName);
+        UserDetails userDetails = u
         return encoder.matches(password, userDetails.getPassword());
     }
 
