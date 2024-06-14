@@ -17,6 +17,7 @@ public class Ad {
     private String title;
     private String description;
     private int price;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
