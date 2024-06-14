@@ -25,8 +25,8 @@ public class AdsController {
     }
 
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<AdDTO> saveAds( @RequestPart("properties") CreateOrUpdateAdDTO properties,
-                                         @RequestPart("image") MultipartFile image) {
+    public ResponseEntity<AdDTO> saveAds( @Valid @RequestPart("image") MultipartFile image,
+                                          @RequestPart("properties") CreateOrUpdateAdDTO properties) {
         try {
             return ResponseEntity.ok(adService.save(properties, image));
         } catch (Exception e) {
