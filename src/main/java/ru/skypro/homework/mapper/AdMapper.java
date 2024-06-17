@@ -13,7 +13,7 @@ public interface AdMapper {
     AdMapper INSTANCE = Mappers.getMapper(AdMapper.class);
 
     @Mapping(source = "id", target = "pk")
-    @Mapping(source = "image.url", target = "image")
+    @Mapping(source = "imageUrl", target = "image")
     AdDTO adToAdDTO(Ad ad);
 
 

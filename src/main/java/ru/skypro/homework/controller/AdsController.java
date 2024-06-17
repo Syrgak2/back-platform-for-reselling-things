@@ -12,6 +12,9 @@ import ru.skypro.homework.dto.ads.ExtendedAdDTO;
 import ru.skypro.homework.dto.ads.AdsDTO;
 import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
+import ru.skypro.homework.service.AdService;
+
+import javax.validation.Valid;
 import ru.skypro.homework.model.User;
 
 @CrossOrigin(value = "http://localhost:3000")
@@ -23,10 +26,17 @@ public class AdsController {
 
     @PostMapping
     public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAdDTO createOrUpdateAd) {
+    private final AdService adService;
+
+    public AdsController(AdService adService) {
+        this.adService = adService;
+    }
+
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<AdDTO> saveAds( @Valid @RequestPart("image") MultipartFile image,
+                                          @RequestPart("properties") CreateOrUpdateAdDTO properties) {
         try {
-            String userName = authentication.getName();
-            AdDTO adDTO = new AdDTO();
-            return ResponseEntity.ok(adDTO);
+            return ResponseEntity.ok(adService.save(properties, image));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

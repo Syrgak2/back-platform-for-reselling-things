@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.exception.BadFileException;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.model.Photo;
 import ru.skypro.homework.repository.PhotoRepository;
@@ -38,7 +39,7 @@ public class PhotoServiceImpl implements PhotoService {
         logger.info("Wos invoked uploadPhoto");
         if (file == null) {
             logger.info("file is empty");
-            throw new  NotFoundException();
+            throw new BadFileException("File is empty");
         }
 
         Photo photo = new Photo();
