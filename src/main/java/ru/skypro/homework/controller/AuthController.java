@@ -13,6 +13,8 @@ import ru.skypro.homework.dto.auth.LoginDTO;
 import ru.skypro.homework.dto.auth.RegisterDTO;
 import ru.skypro.homework.service.AuthService;
 
+import static org.springframework.http.HttpStatus.CREATED;
+
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -38,12 +40,10 @@ public class AuthController {
             summary = "Регистрация пользователя",
             tags = "Регистрация"
     )
+
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO register) {
-        if (authService.register(register)) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+        authService.register(registerDTO);
+        return ResponseEntity.status(CREATED).build();
     }
 }
