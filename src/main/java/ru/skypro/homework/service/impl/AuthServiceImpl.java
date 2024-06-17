@@ -3,7 +3,6 @@ package ru.skypro.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -13,6 +12,7 @@ import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.model.User;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.userDetails.CustomUserDetails;
 
 import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 
@@ -22,17 +22,20 @@ import static org.springframework.transaction.annotation.Isolation.SERIALIZABLE;
 @Transactional(isolation = SERIALIZABLE)
 public class AuthServiceImpl implements AuthService {
 
-    private final UserDetailsManager manager;
     private final PasswordEncoder encoder;
+    private CustomUserDetails customUserDetails;
+
+    public AuthServiceImpl(PasswordEncoder passwordEncoder,
+                           CustomUserDetails customUserDetails) {
+        this.customUserDetails = customUserDetails;
+        this.encoder = passwordEncoder;
+    }
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @Override
     public boolean login(String userName, String password) {
-        if (!manager.userExists(userName)) {
-            return false;
-        }
-        UserDetails userDetails = manager.loadUserByUsername(userName);
+        UserDetails userDetails = customUserDetails.loadUserByUsername(userName);
         return encoder.matches(password, userDetails.getPassword());
     }
 

@@ -14,11 +14,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long author;
-    private String authorImage;
-    private String authorFirstName;
     private LocalDateTime createdAt;
-    private Long pk;
     private String text;
 
     @ManyToOne
@@ -30,6 +26,10 @@ public class Comment {
     private User user;
 
     public Comment() {
+    }
 
+    public Comment(Long id, Long idAuthor, String authorImage, String authorFirstName, String text) {
+        this.id = id;
+        this.text = text;
     }
 }

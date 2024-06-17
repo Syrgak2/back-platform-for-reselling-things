@@ -3,6 +3,7 @@ package ru.skypro.homework.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
@@ -49,8 +50,9 @@ public class CommentController {
             tags = "Комментарии"
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> removeComments(@PathVariable(required = false, name = "id обЪявления") Long adId,
-                                            @PathVariable(required = false, name = "id комментария") Long commentId){
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+    public ResponseEntity<?> removeComments(@PathVariable(name = "id обЪявления") Long adId,
+                                            @PathVariable(name = "id комментария") Long commentId){
         try {
             CommentDTO commentDTO = new CommentDTO();
             if (adId == null){
@@ -69,8 +71,9 @@ public class CommentController {
             tags = "Комментарии"
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<?> patchComments(@PathVariable(required = false, name = "id обЪявления") Long adId,
-                                           @PathVariable(required = false, name = "id комментария") Long commentId,
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+    public ResponseEntity<?> patchComments(@PathVariable(name = "id обЪявления") Long adId,
+                                           @PathVariable(name = "id комментария") Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){
         try {
             if (adId == null){
