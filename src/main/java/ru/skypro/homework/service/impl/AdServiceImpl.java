@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
-import ru.skypro.homework.exception.BadFileException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Photo;
@@ -32,6 +31,11 @@ public class AdServiceImpl implements AdService {
         ad.setImage(photo);
         ad.setImageUrl("/ads/" + photo.getId());
         return adMapper.adToAdDTO(adRepository.save(ad));
+    }
+
+    @Override
+    public Ad find(Long id) {
+        return adRepository.findById(id).orElse(null);
     }
 
 

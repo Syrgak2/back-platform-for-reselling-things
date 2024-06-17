@@ -4,29 +4,39 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
+import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.mapper.CommentMapper;
+import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.service.CommentService;
 
 @RestController
 @RequestMapping("/ads")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
+    private final CommentMapper commentMapper = CommentMapper.INSTANCE;
+
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @Operation(
             summary = "Получение комментариев обЪявления",
             tags = "Комментарии"
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<?> getComments(@PathVariable(required = false, name = "id обЪявления") Long id){
+    public ResponseEntity<CommentsDTO> getComments(@PathVariable(name = "id обЪявления") Long id){
       try {
-          CommentDTO commentDTO = new CommentDTO();
-          if (commentDTO == null){
-              return ResponseEntity.notFound().build();
-          }
-          return ResponseEntity.ok(commentService.getComments(id).getBody());
+          CommentsDTO commentsDTO = new CommentsDTO(commentService.getComments(id));
+          return ResponseEntity.ok(commentsDTO);
       } catch (Exception e) {
           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
@@ -37,10 +47,12 @@ public class CommentController {
             tags = "Комментарии"
     )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<?> addComments(@PathVariable(required = false, name = "id обЪявления") Long id,
+    public ResponseEntity<CommentDTO> addComments(@PathVariable(name = "id обЪявления") Long id,
                                          @RequestBody CreateOrUpdateCommentDTO comment){
+        String userName = authentication.getName();
         try {
-            return ResponseEntity.ok(commentService.addComments(id));
+            Comment savedComment = commentService.addComments(comment, id, userName);
+            return ResponseEntity.ok(commentMapper.toCommentDTO(savedComment));
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

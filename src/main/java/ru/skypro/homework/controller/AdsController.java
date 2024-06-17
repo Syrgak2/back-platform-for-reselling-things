@@ -21,100 +21,99 @@ import ru.skypro.homework.model.User;
 @RestController
 @RequestMapping("/ads")
 public class AdsController {
-
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    @PostMapping
-    public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAdDTO createOrUpdateAd) {
     private final AdService adService;
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     public AdsController(AdService adService) {
         this.adService = adService;
     }
 
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<AdDTO> saveAds( @Valid @RequestPart("image") MultipartFile image,
-                                          @RequestPart("properties") CreateOrUpdateAdDTO properties) {
-        try {
-            return ResponseEntity.ok(adService.save(properties, image));
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
 
-    @GetMapping
-    public ResponseEntity<AdsDTO> getAllAds() {
-        return ResponseEntity.ok(new AdsDTO());
-    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAdDTO> responseAds(@PathVariable Long id) {
-        try {
-            ExtendedAdDTO extendedAd = new ExtendedAdDTO();
-            if (extendedAd == null) {
-                return ResponseEntity.notFound().build();
+        @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+        public ResponseEntity<AdDTO> saveAds (@Valid @RequestPart("image") MultipartFile image,
+                @RequestPart("properties") CreateOrUpdateAdDTO properties){
+            try {
+                return ResponseEntity.ok(adService.save(properties, image));
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            return ResponseEntity.ok(new ExtendedAdDTO());
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
-    public ResponseEntity<?> deleteAds(@PathVariable Long id) {
-        try {
-//            example
-            AdDTO adDTO = new AdDTO();
-            if (adDTO == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (SecurityException securityException) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @PatchMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
-    public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAdDTO ad) {
-        try {
-            AdDTO adDTO1 = new AdDTO();
-            if (adDTO1 == null) {
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(adDTO1);
-        } catch (SecurityException securityException) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<AdsDTO> getUserAds() {
-        try {
+        @GetMapping
+        public ResponseEntity<AdsDTO> getAllAds () {
             return ResponseEntity.ok(new AdsDTO());
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
-    public ResponseEntity<String> editeAdImage(@PathVariable Long id,
-                                               @RequestParam MultipartFile image) {
-        try {
-
-            return ResponseEntity.ok().build();
-        } catch (SecurityException securityException) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-    }
+        @GetMapping("/{id}")
+        public ResponseEntity<ExtendedAdDTO> responseAds (@PathVariable Long id){
+            try {
+                ExtendedAdDTO extendedAd = new ExtendedAdDTO();
+                if (extendedAd == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return ResponseEntity.ok(new ExtendedAdDTO());
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+        public ResponseEntity<?> deleteAds (@PathVariable Long id){
+            try {
+//            example
+                AdDTO adDTO = new AdDTO();
+                if (adDTO == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            } catch (SecurityException securityException) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        @PatchMapping("/{id}")
+        @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+        public ResponseEntity<AdDTO> editeAd (@RequestBody CreateOrUpdateAdDTO ad){
+            try {
+                AdDTO adDTO1 = new AdDTO();
+                if (adDTO1 == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return ResponseEntity.ok(adDTO1);
+            } catch (SecurityException securityException) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        }
+
+        @GetMapping("/me")
+        public ResponseEntity<AdsDTO> getUserAds () {
+            try {
+                return ResponseEntity.ok(new AdsDTO());
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        }
+
+        @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+        @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+        public ResponseEntity<String> editeAdImage (@PathVariable Long id,
+                @RequestParam MultipartFile image){
+            try {
+
+                return ResponseEntity.ok().build();
+            } catch (SecurityException securityException) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+
+        }
+
 }
