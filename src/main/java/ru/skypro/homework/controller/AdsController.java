@@ -3,21 +3,28 @@ package ru.skypro.homework.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ads.ExtendedAdDTO;
 import ru.skypro.homework.dto.ads.AdsDTO;
 import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
+import ru.skypro.homework.model.User;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequestMapping("/ads")
 public class AdsController {
 
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
     @PostMapping
     public ResponseEntity<AdDTO> saveAds(@RequestBody CreateOrUpdateAdDTO createOrUpdateAd) {
         try {
+            String userName = authentication.getName();
             AdDTO adDTO = new AdDTO();
             return ResponseEntity.ok(adDTO);
         } catch (Exception e) {
@@ -44,6 +51,7 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
     public ResponseEntity<?> deleteAds(@PathVariable Long id) {
         try {
 //            example
@@ -60,6 +68,7 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
     public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAdDTO ad) {
         try {
             AdDTO adDTO1 = new AdDTO();
@@ -85,6 +94,7 @@ public class AdsController {
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
     public ResponseEntity<String> editeAdImage(@PathVariable Long id,
                                                @RequestParam MultipartFile image) {
         try {
