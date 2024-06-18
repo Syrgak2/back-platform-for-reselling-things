@@ -33,9 +33,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByCommentId(Long id) {
+        return userRepository.findByCommentId(id).orElse(null);
+    }
+
+    @Override
     public Boolean saveAvatar(MultipartFile file, String userName) throws IOException {
         User user = find(userName);
         if (user == null) {
+
             throw new NotFoundException();
         }
 
