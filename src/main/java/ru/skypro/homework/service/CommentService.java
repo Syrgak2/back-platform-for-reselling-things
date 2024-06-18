@@ -12,6 +12,8 @@ public interface CommentService {
 
     List<CommentDTO> getComments(Long adId);
 
+    Comment find(Long id);
+
     Comment addComments(CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Long id, String userName);
 
     Boolean removeComments(Long adId, Long commentId);
