@@ -3,6 +3,7 @@ package ru.skypro.homework.service.impl;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.model.Comment;
@@ -13,7 +14,6 @@ import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +40,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Comment find(Long id) {
+        return commentRepository.findById(id).orElse(null);
+    }
+
+
+    @Override
      public Comment addComments(CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Long id, String userName){
         User user = userService.find(userName);
         Ad ad = adService.find(id);
@@ -53,7 +59,13 @@ public class CommentServiceImpl implements CommentService {
 
    @Override
      public Boolean removeComments(Long adId, Long commentId){
-         String ok = "okeRemove";
+       Comment comment = find(commentId);
+
+       if (comment == null) {
+           throw new NotFoundException();
+       }
+
+       commentRepository.deleteById(commentId);
        return true;
     }
 
@@ -61,9 +73,12 @@ public class CommentServiceImpl implements CommentService {
      public Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment, String userName){
        Ad ad = adService.find(adId);
        User user = userService.find(userName);
-
-       return new Comment();
-
+       Comment foundComment = find(commentId);
+       if (user != foundComment.getUser() && ad != foundComment.getAd()) {
+           throw new NotFoundException();
+       }
+       foundComment.setText(comment.getText());
+       return commentRepository.save(foundComment);
    }
 
 
