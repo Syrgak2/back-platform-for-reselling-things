@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Getter
@@ -22,7 +23,7 @@ public class Ad {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(mappedBy = "ad")
-    private Collection<Comment> comments;
+    private List<Comment> comments;
     @OneToOne
     @JoinColumn(name = "photo_id")
     private Photo image;

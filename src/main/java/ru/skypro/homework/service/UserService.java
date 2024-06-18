@@ -11,6 +11,8 @@ public interface UserService {
 
     User find(String userName);
 
+    User findByCommentId(Long id);
+
     Boolean saveAvatar(MultipartFile file, String userName) throws IOException;
 
 }
