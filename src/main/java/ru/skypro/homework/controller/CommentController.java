@@ -13,6 +13,7 @@ import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.UserService;
 
 @RestController
 @RequestMapping("/ads")
@@ -20,12 +21,14 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper = CommentMapper.INSTANCE;
+    private final UserService userService;
 
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, UserService userService) {
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @Operation(
@@ -33,7 +36,7 @@ public class CommentController {
             tags = "Комментарии"
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> getComments(@PathVariable(name = "id обЪявления") Long id){
+    public ResponseEntity<CommentsDTO> getComments(@PathVariable Long id){
       try {
           CommentsDTO commentsDTO = new CommentsDTO(commentService.getComments(id));
           return ResponseEntity.ok(commentsDTO);
@@ -47,7 +50,7 @@ public class CommentController {
             tags = "Комментарии"
     )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> addComments(@PathVariable(name = "id обЪявления") Long id,
+    public ResponseEntity<CommentDTO> addComments(@PathVariable Long id,
                                          @RequestBody CreateOrUpdateCommentDTO comment){
         String userName = authentication.getName();
         try {
@@ -62,31 +65,31 @@ public class CommentController {
             tags = "Комментарии"
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
-    public ResponseEntity<?> removeComments(@PathVariable(name = "id обЪявления") Long adId,
-                                            @PathVariable(name = "id комментария") Long commentId){
-        try {
-            CommentDTO commentDTO = new CommentDTO();
-            if (adId == null){
-                return ResponseEntity.notFound().build();
-            }
-            if (commentId == null){
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(commentService.removeComments(adId, commentId));
-        } catch (Exception e) {
+    @PreAuthorize("hasRole( 'ADMIN' )" )
+    public ResponseEntity<?> removeComments(@PathVariable Long adId,
+                                            @PathVariable Long commentId){
+        if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        if (authentication.getName().equals(userService.findByCommentId(commentId).getUsername())) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        boolean excepted = commentService.removeComments(adId, commentId);
+        if (!excepted) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().build();
     }
     @Operation(
             summary = "Обновление комментария",
             tags = "Комментарии"
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
-    public ResponseEntity<?> patchComments(@PathVariable(name = "id обЪявления") Long adId,
-                                           @PathVariable(name = "id комментария") Long commentId,
+    @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.findAdByCommentId(commentId).author.userName.equals(authentication.name)")
+    public ResponseEntity<?> patchComments(@PathVariable Long adId,
+                                           @PathVariable Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){
+        String userName = authentication.getName();
         try {
             if (adId == null){
                 return ResponseEntity.notFound().build();
@@ -94,7 +97,7 @@ public class CommentController {
             if (commentId == null){
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(commentService.patchComments(adId, commentId, comment));
+            return ResponseEntity.ok(commentService.patchComments(adId, commentId, comment, userName));
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

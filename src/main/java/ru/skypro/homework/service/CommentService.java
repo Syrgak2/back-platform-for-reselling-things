@@ -16,6 +16,6 @@ public interface CommentService {
 
     Boolean removeComments(Long adId, Long commentId);
 
-    Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment);
+    Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment, String userName);
 }
 

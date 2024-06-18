@@ -58,8 +58,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
    @Override
-     public Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment){
-       String ok = "okeRemove";
+     public Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment, String userName){
+       Ad ad = adService.find(adId);
+       User user = userService.find(userName);
+
        return new Comment();
 
    }
