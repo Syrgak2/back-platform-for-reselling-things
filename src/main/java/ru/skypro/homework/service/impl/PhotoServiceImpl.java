@@ -11,12 +11,9 @@ import ru.skypro.homework.repository.PhotoRepository;
 import ru.skypro.homework.service.PhotoService;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -26,6 +23,11 @@ public class PhotoServiceImpl implements PhotoService {
 
     public PhotoServiceImpl(PhotoRepository photoRepository) {
         this.photoRepository = photoRepository;
+    }
+
+    @Override
+    public Photo find(Long id) {
+        return photoRepository.findById(id).orElse(null);
     }
 
     /**
@@ -56,24 +58,20 @@ public class PhotoServiceImpl implements PhotoService {
     /**
      * Получает файл от диска по переданному пути и отправляет HttpResponse
      * Нужно доработать в зависемости от требований RestApi
-     * @param path Путь, где сохранен файл
-     * @param response HttpServletResponse для отправления на клиент
+     * @param id id photo
      * @throws IOException может выбросить ошибку
      */
     @Override
-    public void getPhoto(Path path, HttpServletResponse response) throws IOException {
+    public byte[] getPhoto(Long id) {
         logger.trace("Wos invoked method for get avatar");
 
+        Photo photo = find(id);
 
-        try (
-                InputStream is = Files.newInputStream(path);
-                OutputStream os = response.getOutputStream();
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-            response.setStatus(200);
-            bis.transferTo(os);
+        if (photo == null) {
+            throw new NotFoundException("File is not found");
         }
+
+        return photo.getImage();
     }
 
     /**

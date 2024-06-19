@@ -13,4 +13,9 @@ public class AdsDTO {
 
     public AdsDTO() {
     }
+
+    public AdsDTO( List<AdDTO> results) {
+        this.count = results.size();
+        this.results = results;
+    }
 }

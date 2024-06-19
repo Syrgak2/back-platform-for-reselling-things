@@ -32,8 +32,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getComments(Long adId){
-        Ad ad  = adService.find(adId);
+    public List<CommentDTO> getComments(Long adId) {
+        Ad ad = adService.find(adId);
         return ad.getComments().stream()
                 .map(commentMapper::toCommentDTO)
                 .collect(Collectors.toList());
@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-     public Comment addComments(CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Long id, String userName){
+    public Comment addComments(CreateOrUpdateCommentDTO createOrUpdateCommentDTO, Long id, String userName) {
         User user = userService.find(userName);
         Ad ad = adService.find(id);
         Comment comment = commentMapper.createOrUpdateToComment(createOrUpdateCommentDTO);
@@ -57,29 +57,44 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-   @Override
-     public Boolean removeComments(Long adId, Long commentId){
-       Comment comment = find(commentId);
+    @Override
+    public Boolean removeComments(Long adId, Long commentId) {
+        Comment comment = find(commentId);
 
-       if (comment == null) {
-           throw new NotFoundException();
-       }
+        if (comment == null) {
+            throw new NotFoundException();
+        }
 
-       commentRepository.deleteById(commentId);
-       return true;
+        commentRepository.deleteById(commentId);
+        return true;
     }
 
-   @Override
-     public Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment, String userName){
-       Ad ad = adService.find(adId);
-       User user = userService.find(userName);
-       Comment foundComment = find(commentId);
-       if (user != foundComment.getUser() && ad != foundComment.getAd()) {
-           throw new NotFoundException();
-       }
-       foundComment.setText(comment.getText());
-       return commentRepository.save(foundComment);
-   }
+    @Override
+    public Comment patchComments(Long adId, Long commentId, CreateOrUpdateCommentDTO comment, String userName) {
+        Ad ad = adService.find(adId);
+        User user = userService.find(userName);
+        Comment foundComment = find(commentId);
+        if (user != foundComment.getUser() && ad != foundComment.getAd()) {
+            throw new NotFoundException();
+        }
+        foundComment.setText(comment.getText());
+        return commentRepository.save(foundComment);
+    }
+
+    @Override
+    public List<Comment> findByAdId(Long adId) {
+        return commentRepository.findAllByAdId(adId);
+    }
+
+    @Override
+    public boolean removeAll(List<Comment> comments) {
+        if (comments.isEmpty()) {
+            return false;
+        }
+
+        commentRepository.deleteAll(comments);
+        return true;
+    }
 
 
 }

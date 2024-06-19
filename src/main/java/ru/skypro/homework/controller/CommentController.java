@@ -71,7 +71,7 @@ public class CommentController {
         if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        if (authentication.getName().equals(userService.findByCommentId(commentId).getUsername())) {
+        if (!authentication.getName().equals(userService.findByCommentId(commentId).getUsername())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         boolean excepted = commentService.removeComments(adId, commentId);

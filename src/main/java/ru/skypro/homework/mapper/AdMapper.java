@@ -14,13 +14,14 @@ public interface AdMapper {
 
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "imageUrl", target = "image")
+    @Mapping(source = "user.id", target = "author")
     AdDTO adToAdDTO(Ad ad);
 
 
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "user.firstName", target = "authorFirstName")
     @Mapping(source = "user.lastName", target = "authorLastName")
-    ExtendedAdDTO AdToExtendAd(Ad ad);
+    ExtendedAdDTO adToExtendAd(Ad ad);
 
     Ad createOrUpdateAdToAd(CreateOrUpdateAdDTO ad);
 }
