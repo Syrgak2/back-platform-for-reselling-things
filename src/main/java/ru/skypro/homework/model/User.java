@@ -6,6 +6,7 @@ import lombok.Setter;
 import ru.skypro.homework.dto.Role;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 
@@ -18,9 +19,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
+    @NotNull
     private String username;
 
     @Column(name = "password")

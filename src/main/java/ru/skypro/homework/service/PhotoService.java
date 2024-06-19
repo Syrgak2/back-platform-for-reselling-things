@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface PhotoService {
+    Photo find(Long id);
+
     Photo save(MultipartFile file) throws IOException;
 
-    void getPhoto(Path path, HttpServletResponse response) throws IOException;
+    byte[] getPhoto(Long id);
 
     Boolean remove(Long id);
 

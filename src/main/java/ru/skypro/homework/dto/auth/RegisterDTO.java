@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.Role;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -39,5 +40,7 @@ public class RegisterDTO {
     private String phone;
 
     @Schema(description = "Роль пользователя")
+    @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}",
+            message = "ТЕЛЕФОН ПОЛЬЗОВАТЕЛЯ ДОЛЖЕН БЫТЬ В СООТВЕТСТВИИ С ШАБЛОНОМ +7 (777) 777-77-77!")
     private Role role;
 }

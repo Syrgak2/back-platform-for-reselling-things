@@ -4,14 +4,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.skypro.homework.userDetails.CustomUserDetails;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class WebSecurityConfig {
+
+    private final CustomUserDetails customUserDetails;
+
+    public WebSecurityConfig(CustomUserDetails customUserDetails) {
+        this.customUserDetails = customUserDetails;
+    }
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
@@ -30,25 +39,30 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
-                                        .mvcMatchers(AUTH_WHITELIST)
+                                        .mvcMatchers(AUTH_WHITELIST).permitAll()
+                                        .mvcMatchers(HttpMethod.GET, "/ads")
                                         .permitAll()
                                         .mvcMatchers(HttpMethod.PATCH, "/ads/{id}", "ads/{adId}/comments{commentId}")
                                         .hasRole("ADMIN")
                                         .mvcMatchers(HttpMethod.POST, "/ads", "/ads/{id}comments")
                                         .hasRole("USER")
                                         .mvcMatchers("/ads/**", "/users/**")
-                                        .authenticated()
-                                        .mvcMatchers(HttpMethod.GET, "/ads")
-                                        .permitAll())
-                .cors()
-                .and()
-                .httpBasic(withDefaults());
+                                        .authenticated())
+
+                .cors().and()
+                .httpBasic(withDefaults())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return customUserDetails;
     }
 
 }

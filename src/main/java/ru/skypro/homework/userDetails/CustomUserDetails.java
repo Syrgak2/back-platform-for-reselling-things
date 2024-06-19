@@ -10,7 +10,8 @@ import ru.skypro.homework.service.UserService;
 
 @Service
 public class CustomUserDetails implements UserDetailsService {
-    private UserService userService;
+
+    private final UserService userService;
 
     public CustomUserDetails(UserService userService) {
         this.userService = userService;

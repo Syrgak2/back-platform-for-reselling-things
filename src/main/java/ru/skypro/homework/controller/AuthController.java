@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework.dto.auth.LoginDTO;
 import ru.skypro.homework.dto.auth.RegisterDTO;
+import ru.skypro.homework.exception.UserNameHasAlreadyAdded;
 import ru.skypro.homework.service.AuthService;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -18,10 +19,13 @@ import static org.springframework.http.HttpStatus.CREATED;
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Operation(
             summary = "Авторизация пользователя",
@@ -42,8 +46,12 @@ public class AuthController {
     )
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
-        authService.register(registerDTO);
-        return ResponseEntity.status(CREATED).build();
+    public ResponseEntity<RegisterDTO> register(@RequestBody RegisterDTO registerDTO) {
+        try {
+            authService.register(registerDTO);
+            return ResponseEntity.status(CREATED).build();
+        } catch (UserNameHasAlreadyAdded alreadyAdded) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
