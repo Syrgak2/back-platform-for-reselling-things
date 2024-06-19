@@ -14,6 +14,7 @@ public interface AdMapper {
 
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "imageUrl", target = "image")
+    @Mapping(source = "user.id", target = "author")
     AdDTO adToAdDTO(Ad ad);
 
 

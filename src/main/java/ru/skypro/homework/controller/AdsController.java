@@ -32,6 +32,7 @@ public class AdsController {
 
     private final AdMapper adMapper = AdMapper.INSTANCE;
 
+
     public AdsController(AdService adService, UserService userService) {
         this.adService = adService;
     }

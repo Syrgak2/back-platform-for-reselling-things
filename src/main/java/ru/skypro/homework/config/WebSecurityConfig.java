@@ -16,11 +16,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 public class WebSecurityConfig {
 
-    private final CustomUserDetails customUserDetails;
 
-    public WebSecurityConfig(CustomUserDetails customUserDetails) {
-        this.customUserDetails = customUserDetails;
-    }
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-resources/**",
@@ -39,7 +35,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(
                         authorization ->
                                 authorization
-                                        .mvcMatchers(AUTH_WHITELIST).permitAll()
+                                        .mvcMatchers(AUTH_WHITELIST)
+                                        .permitAll()
                                         .mvcMatchers(HttpMethod.GET, "/ads")
                                         .permitAll()
                                         .mvcMatchers(HttpMethod.PATCH, "/ads/{id}", "ads/{adId}/comments{commentId}")
@@ -48,10 +45,9 @@ public class WebSecurityConfig {
                                         .hasRole("USER")
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())
-
-                .cors().and()
-                .httpBasic(withDefaults())
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .cors()
+                .and()
+                .httpBasic(withDefaults());
         return http.build();
     }
 
@@ -60,9 +56,5 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return customUserDetails;
-    }
 
 }
