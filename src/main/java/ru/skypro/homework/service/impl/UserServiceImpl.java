@@ -1,7 +1,10 @@
 package ru.skypro.homework.service.impl;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.auth.NewPasswordDTO;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.model.Photo;
@@ -17,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PhotoService photoService;
+    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserServiceImpl(UserRepository userRepository, PhotoService photoService) {
         this.userRepository = userRepository;
@@ -75,6 +79,17 @@ public class UserServiceImpl implements UserService {
                     foundUser.setPhone(updateUserDTO.getPhone());
                     return userRepository.save(foundUser);
                 }).orElse(null);
+    }
+
+    @Override
+    public boolean setPassword(String name, NewPasswordDTO newPassword) {
+        User user = find(name);
+        if (passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+            user.setPassword(newPassword.getNewPassword());
+            return true;
+        }
+
+        return false;
     }
 
 }

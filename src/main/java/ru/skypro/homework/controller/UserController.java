@@ -26,12 +26,23 @@ public class UserController {
 
     @PostMapping("/set_password")
     public ResponseEntity<?> setPassword(@RequestBody NewPasswordDTO newPassword) {
-        return ResponseEntity.ok(new NewPasswordDTO());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        if (!userService.setPassword(authentication.getName(), newPassword)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        return ResponseEntity.ok().build();
     }
     @GetMapping("/me")
     public ResponseEntity<?> getUser() {
         return ResponseEntity.ok(new UserDTO());
     }
+
+
     @PatchMapping("/me")
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUser) {
         return ResponseEntity.ok(new UpdateUserDTO());
