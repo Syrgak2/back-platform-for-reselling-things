@@ -65,14 +65,15 @@ public class UserServiceImpl implements UserService {
         Photo savedPhoto = photoService.save(file);
 
         user.setUserAvatar(savedPhoto);
+        user.setImageUrl("/images?imageId=" + savedPhoto.getId());
         userRepository.save(user);
 
         return true;
     }
 
     @Override
-    public User edite(Long userid, UpdateUserDTO updateUserDTO) {
-        return userRepository.findById(userid)
+    public User edite(String username, UpdateUserDTO updateUserDTO) {
+        return userRepository.findByUsername(username)
                 .map(foundUser -> {
                     foundUser.setFirstName(updateUserDTO.getFirstName());
                     foundUser.setLastName(updateUserDTO.getLastName());

@@ -54,7 +54,7 @@ public class AdServiceImpl implements AdService {
         assert ad != null;
         ad.setImage(photo);
         ad.setUser(user);
-        ad.setImageUrl("/ads/" + photo.getId());
+        ad.setImageUrl("/images?imageId=" + photo.getId());
         return adRepository.save(ad);
     }
 

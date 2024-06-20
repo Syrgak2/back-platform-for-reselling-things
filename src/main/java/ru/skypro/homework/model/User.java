@@ -17,7 +17,7 @@ import java.util.Collection;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -36,6 +36,8 @@ public class User {
 
     @Column(name = "phone_number")
     private String phone;
+
+    private String imageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")

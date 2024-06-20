@@ -10,12 +10,11 @@ import javax.persistence.*;
 @Entity
 public class Photo {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private long  fileSize;
     private String mediaType;
-    private String url;
     @Lob
     private byte[] image;
 

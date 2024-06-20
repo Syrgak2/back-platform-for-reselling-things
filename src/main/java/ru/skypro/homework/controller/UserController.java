@@ -11,14 +11,19 @@ import ru.skypro.homework.dto.auth.NewPasswordDTO;
 import ru.skypro.homework.dto.user.UpdateUserDTO;
 import ru.skypro.homework.dto.user.UserDTO;
 import ru.skypro.homework.exception.NotFoundException;
+import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.model.User;
 import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 
 @RestController
+@CrossOrigin(value = "http://localhost:3000")
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
+
+    private final UserMapper userMapper = UserMapper.INSTANCE;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -38,14 +43,36 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/me")
-    public ResponseEntity<?> getUser() {
-        return ResponseEntity.ok(new UserDTO());
+    public ResponseEntity<UserDTO> getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userService.find(authentication.getName());
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+
+        return ResponseEntity.ok(userMapper.usertoUserDto(user));
     }
 
 
     @PatchMapping("/me")
-    public ResponseEntity<?> updateUser(@RequestBody UpdateUserDTO updateUser) {
-        return ResponseEntity.ok(new UpdateUserDTO());
+    public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUser) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (!authentication.isAuthenticated()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        User user = userService.edite(authentication.getName(), updateUser);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(updateUser);
     }
 
     /**
