@@ -19,7 +19,7 @@ public interface UserService {
 
     User save(User user);
 
-    User edite(Long userid, UpdateUserDTO updateUserDTO);
+    User edite(String username, UpdateUserDTO updateUserDTO);
 
     boolean setPassword(String name, NewPasswordDTO newPassword);
 }

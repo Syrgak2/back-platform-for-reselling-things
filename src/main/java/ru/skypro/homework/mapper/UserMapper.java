@@ -16,8 +16,8 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(source = "userAvatar.url", target = "image")
-    UserDTO UsertoUserDto(User userModel);
+    @Mapping(source = "imageUrl", target = "image")
+    UserDTO usertoUserDto(User userModel);
 
     User updateUserToUser(UpdateUserDTO user);
 
