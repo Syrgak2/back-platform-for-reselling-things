@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static ru.skypro.homework.constant.Constants.URL_PHOTO_CONSTANT;
+
 @Service
 public class AdServiceImpl implements AdService {
 
@@ -54,7 +56,7 @@ public class AdServiceImpl implements AdService {
         assert ad != null;
         ad.setImage(photo);
         ad.setUser(user);
-        ad.setImageUrl("/images?imageId=" + photo.getId());
+        ad.setImageUrl(URL_PHOTO_CONSTANT + photo.getId());
         return adRepository.save(ad);
     }
 
@@ -119,6 +121,7 @@ public class AdServiceImpl implements AdService {
         try {
             Photo photo = photoService.save(file);
             ad.setImage(photo);
+            ad.setImageUrl(URL_PHOTO_CONSTANT + photo.getId());
         } catch (IOException ioException) {
             log.info("The file is wrong");
             throw new BadFileException();

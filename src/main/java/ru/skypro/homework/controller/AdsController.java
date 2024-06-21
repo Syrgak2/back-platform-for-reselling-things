@@ -55,7 +55,7 @@ public class AdsController {
         AdsDTO adsDTO = new AdsDTO(adService.getAllAds());
         if (adsDTO.getCount() == 0) {
             log.info("Ads is empty");
-            throw new NotFoundException();
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(adsDTO);
     }

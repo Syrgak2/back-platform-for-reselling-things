@@ -15,6 +15,8 @@ import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 
+import static ru.skypro.homework.constant.Constants.URL_PHOTO_CONSTANT;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -51,21 +53,20 @@ public class UserServiceImpl implements UserService {
     public Boolean saveAvatar(MultipartFile file, String userName) throws IOException {
         User user = find(userName);
         if (user == null) {
-
             throw new NotFoundException();
         }
 
         if (user.getUserAvatar() != null) {
             Photo photo = user.getUserAvatar();
-            photoService.remove(photo.getId());
-
             user.setUserAvatar(null);
             userRepository.save(user);
+            photoService.remove(photo.getId());
+
         }
         Photo savedPhoto = photoService.save(file);
 
         user.setUserAvatar(savedPhoto);
-        user.setImageUrl("/images?imageId=" + savedPhoto.getId());
+        user.setImageUrl(URL_PHOTO_CONSTANT + savedPhoto.getId());
         userRepository.save(user);
 
         return true;

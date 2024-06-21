@@ -10,7 +10,7 @@ import ru.skypro.homework.service.PhotoService;
 
 @RestController
 @CrossOrigin(value = "http://localhost:3000")
-@RequestMapping("/images")
+@RequestMapping("/photo/")
 public class PhotoController {
 
     private final PhotoService photoService;
@@ -19,17 +19,17 @@ public class PhotoController {
         this.photoService = photoService;
     }
 
-    @GetMapping
-    public ResponseEntity<byte[]> getPhoto(@RequestParam Long imageId) {
+    @GetMapping(value = "image/{imageId}")
+    public ResponseEntity<byte[]> getPhoto(@PathVariable Long imageId) {
         Photo photo = photoService.find(imageId);
         if (photo == null) {
             return ResponseEntity.noContent().build();
         }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(photo.getMediaType()));
+        headers.setContentLength(photo.getImage().length);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.parseMediaType(photo.getMediaType()));
-        httpHeaders.setContentLength(photo.getImage().length);
-
-        return ResponseEntity.status(HttpStatus.OK).headers(httpHeaders).body(photo.getImage());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(photo.getImage());
     }
+
 }
