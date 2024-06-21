@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Objects;
 
 @Service
 public class PhotoServiceImpl implements PhotoService {
@@ -47,7 +48,7 @@ public class PhotoServiceImpl implements PhotoService {
         Photo photo = new Photo();
         photo.setFileSize(file.getSize());
         photo.setMediaType(file.getContentType());
-        photo.setImage(generateImagePreview(file));
+        photo.setImage(file.getBytes());
 
         return photoRepository.save(photo);
 
@@ -92,27 +93,32 @@ public class PhotoServiceImpl implements PhotoService {
      * @return byte код файла для сохранения на БД
      * @throws IOException может выбросить ошибку
      */
-
-    private byte[] generateImagePreview(MultipartFile file)throws IOException {
-        if (file == null) {
-            logger.warn("filePath is null");
+    private byte[] generateImagePreview(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            logger.warn("Uploaded file is null or empty");
             throw new NotFoundException("Файл не найден");
         }
 
         try (
                 InputStream is = file.getInputStream();
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedInputStream bis = new BufferedInputStream(is);
                 ByteArrayOutputStream baos = new ByteArrayOutputStream()
         ) {
             BufferedImage image = ImageIO.read(bis);
+            if (image == null) {
+                logger.warn("Could not read image from uploaded file");
+                throw new IOException("Не удалось прочитать изображение из файла");
+            }
 
-            int height = image.getHeight() / (image.getWidth() / 100);
-            BufferedImage preview = new BufferedImage(100, height, image.getType());
+            int width = 100;
+            int height = (int) (((double) image.getHeight() / image.getWidth()) * width);
+            BufferedImage preview = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D graphics = preview.createGraphics();
-            graphics.drawImage(image, 0, 0, 100, height, null);
+            graphics.drawImage(image, 0, 0, width, height, null);
             graphics.dispose();
 
-            ImageIO.write(preview, getExtension(file.getName()), baos);
+            String formatName = getExtension(Objects.requireNonNull(file.getOriginalFilename()));
+            ImageIO.write(preview, formatName, baos);
             return baos.toByteArray();
         }
     }

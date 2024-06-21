@@ -25,7 +25,6 @@ public class CommentController {
     private final UserService userService;
 
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     public CommentController(CommentService commentService, UserService userService) {
         this.commentService = commentService;
@@ -53,6 +52,7 @@ public class CommentController {
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDTO> addComments(@PathVariable Long id,
                                          @RequestBody CreateOrUpdateCommentDTO comment){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         try {
             Comment savedComment = commentService.addComments(comment, id, userName);
@@ -69,6 +69,7 @@ public class CommentController {
     @PreAuthorize("hasRole( 'ADMIN' )" )
     public ResponseEntity<?> removeComments(@PathVariable Long adId,
                                             @PathVariable Long commentId){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
@@ -90,6 +91,7 @@ public class CommentController {
     public ResponseEntity<?> patchComments(@PathVariable Long adId,
                                            @PathVariable Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         try {
             if (adId == null){
