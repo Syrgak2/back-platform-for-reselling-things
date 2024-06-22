@@ -88,7 +88,7 @@ public class CommentController {
             tags = "Комментарии"
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.findAdByCommentId(commentId).author.userName.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.find(commentId).author.username.equals(authentication.name)")
     public ResponseEntity<CommentDTO> patchComments(@PathVariable Long adId,
                                            @PathVariable Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){

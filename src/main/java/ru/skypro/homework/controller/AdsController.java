@@ -74,7 +74,7 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.find(id).user.username.equals(authentication.name)")
     public ResponseEntity<?> deleteAds (@PathVariable Long id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!authentication.isAuthenticated()) {
@@ -87,16 +87,13 @@ public class AdsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (!authentication.getName().equals(ad.getUser().getUsername())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
         adService.removeAd(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.find(id).user.username.equals(authentication.name)")
     public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAdDTO ad,
                                          @PathVariable Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -109,10 +106,6 @@ public class AdsController {
 
         if (foundAd == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (!authentication.getName().equals(foundAd.getUser().getUsername())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         return ResponseEntity.ok(adMapper.adToAdDTO(adService.edite(id, ad)));
@@ -146,11 +139,8 @@ public class AdsController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if (!authentication.getName().equals(ad.getUser().getUsername())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
 
-        return ResponseEntity.ok(adService.editeImage(id, image));
+        return ResponseEntity.ok(adService.editeImage(id, image).getImage());
     }
 
 }

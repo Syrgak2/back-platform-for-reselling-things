@@ -57,10 +57,8 @@ public class PhotoServiceImpl implements PhotoService {
 
 
     /**
-     * Получает файл от диска по переданному пути и отправляет HttpResponse
-     * Нужно доработать в зависемости от требований RestApi
+     * Отправляет фото из бд
      * @param id id photo
-     * @throws IOException может выбросить ошибку
      */
     @Override
     public byte[] getPhoto(Long id) {

@@ -22,11 +22,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PhotoService photoService;
+    private final PasswordEncoder encoder;
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public UserServiceImpl(UserRepository userRepository, PhotoService photoService) {
+    public UserServiceImpl(UserRepository userRepository, PhotoService photoService, PasswordEncoder encoder) {
         this.userRepository = userRepository;
         this.photoService = photoService;
+        this.encoder = encoder;
     }
 
     @Override
@@ -86,8 +88,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean setPassword(String name, NewPasswordDTO newPassword) {
         User user = find(name);
-        if (passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
-            user.setPassword(newPassword.getNewPassword());
+        if (encoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
+            user.setPassword(encoder.encode(newPassword.getNewPassword()));
+            userRepository.save(user);
             return true;
         }
 
