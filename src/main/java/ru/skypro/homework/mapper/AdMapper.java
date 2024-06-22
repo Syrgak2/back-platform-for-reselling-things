@@ -21,6 +21,7 @@ public interface AdMapper {
     @Mapping(source = "id", target = "pk")
     @Mapping(source = "user.firstName", target = "authorFirstName")
     @Mapping(source = "user.lastName", target = "authorLastName")
+    @Mapping(source = "imageUrl", target = "image")
     ExtendedAdDTO adToExtendAd(Ad ad);
 
     Ad createOrUpdateAdToAd(CreateOrUpdateAdDTO ad);

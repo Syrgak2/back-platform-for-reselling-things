@@ -39,8 +39,6 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers(HttpMethod.GET, "/ads")
                                         .permitAll()
-                                        .mvcMatchers(HttpMethod.PATCH, "/ads/{id}", "ads/{adId}/comments{commentId}")
-                                        .hasRole("ADMIN")
                                         .mvcMatchers(HttpMethod.POST, "/ads", "/ads/{id}comments")
                                         .hasRole("USER")
                                         .mvcMatchers("/ads/**", "/users/**")
@@ -50,6 +48,8 @@ public class WebSecurityConfig {
                 .httpBasic(withDefaults());
         return http.build();
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

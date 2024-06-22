@@ -13,6 +13,7 @@ public class ExtendedAdDTO {
     private String authorFirstName;
     private String authorLastName;
     private String description;
+    private String image;
     private String email;
     private String phone;
     private int price;

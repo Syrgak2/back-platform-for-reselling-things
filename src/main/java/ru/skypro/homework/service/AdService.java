@@ -4,6 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
 import ru.skypro.homework.model.Ad;
+import ru.skypro.homework.model.Photo;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,5 +25,5 @@ public interface AdService {
 
     List<AdDTO> getUsersAds(String userName);
 
-    byte[] editeImage(Long id, MultipartFile file);
+    Photo editeImage(Long id, MultipartFile file);
 }

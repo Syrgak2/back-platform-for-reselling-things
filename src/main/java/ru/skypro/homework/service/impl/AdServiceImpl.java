@@ -86,6 +86,12 @@ public class AdServiceImpl implements AdService {
         }
 
         commentService.removeAll(ad.getComments());
+        if (ad.getImage() != null) {
+            Long photoId = ad.getImage().getId();
+            ad.setImage(null);
+            adRepository.save(ad);
+            photoService.remove(photoId);
+        }
 
         adRepository.deleteById(id);
     }
@@ -112,25 +118,24 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public byte[] editeImage(Long id, MultipartFile file) {
+    public Photo editeImage(Long id, MultipartFile file) {
         Ad ad = find(id);
         if (ad.getImage() != null) {
-            photoService.remove(ad.getImage().getId());
+            Long photoId = ad.getImage().getId();
             ad.setImage(null);
+            adRepository.save(ad);
+            photoService.remove(photoId);
         }
         try {
             Photo photo = photoService.save(file);
             ad.setImage(photo);
             ad.setImageUrl(URL_PHOTO_CONSTANT + photo.getId());
+            adRepository.save(ad);
+            return photo;
         } catch (IOException ioException) {
             log.info("The file is wrong");
             throw new BadFileException();
         }
-
-        adRepository.save(ad);
-
-        return getPhoto(id);
-
     }
 
     private byte[] getPhoto(Long id) {
