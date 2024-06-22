@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
+import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.service.CommentService;
@@ -88,22 +89,24 @@ public class CommentController {
     )
     @PatchMapping("/{adId}/comments/{commentId}")
     @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.findAdByCommentId(commentId).author.userName.equals(authentication.name)")
-    public ResponseEntity<?> patchComments(@PathVariable Long adId,
+    public ResponseEntity<CommentDTO> patchComments(@PathVariable Long adId,
                                            @PathVariable Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
         try {
-            if (adId == null){
+            if (adId == null) {
                 return ResponseEntity.notFound().build();
             }
-            if (commentId == null){
+            if (commentId == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(commentService.patchComments(adId, commentId, comment, userName));
+            return ResponseEntity.ok(commentMapper.toCommentDTO(commentService.patchComments(adId, commentId, comment, userName)));
+
 //            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } catch (NotFoundException notFoundException) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

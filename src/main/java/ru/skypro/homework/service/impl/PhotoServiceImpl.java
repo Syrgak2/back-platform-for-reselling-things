@@ -87,41 +87,6 @@ public class PhotoServiceImpl implements PhotoService {
         return true;
     }
 
-    /**
-     * Сжимает файл для сохранения в базу
-     * @param file путь файл для сжатия
-     * @return byte код файла для сохранения на БД
-     * @throws IOException может выбросить ошибку
-     */
-    private byte[] generateImagePreview(MultipartFile file) throws IOException {
-        if (file == null || file.isEmpty()) {
-            logger.warn("Uploaded file is null or empty");
-            throw new NotFoundException("Файл не найден");
-        }
-
-        try (
-                InputStream is = file.getInputStream();
-                BufferedInputStream bis = new BufferedInputStream(is);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream()
-        ) {
-            BufferedImage image = ImageIO.read(bis);
-            if (image == null) {
-                logger.warn("Could not read image from uploaded file");
-                throw new IOException("Не удалось прочитать изображение из файла");
-            }
-
-            int width = 100;
-            int height = (int) (((double) image.getHeight() / image.getWidth()) * width);
-            BufferedImage preview = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-            Graphics2D graphics = preview.createGraphics();
-            graphics.drawImage(image, 0, 0, width, height, null);
-            graphics.dispose();
-
-            String formatName = getExtension(Objects.requireNonNull(file.getOriginalFilename()));
-            ImageIO.write(preview, formatName, baos);
-            return baos.toByteArray();
-        }
-    }
 
     private String getExtension(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
