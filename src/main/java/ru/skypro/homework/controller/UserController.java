@@ -3,6 +3,7 @@ package ru.skypro.homework.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -43,11 +44,9 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserDTO> getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
         User user = userService.find(authentication.getName());
         if (user == null) {
@@ -60,12 +59,9 @@ public class UserController {
 
 
     @PatchMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody UpdateUserDTO updateUser) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
         User user = userService.edite(authentication.getName(), updateUser);
 
@@ -79,19 +75,16 @@ public class UserController {
      * Нужно проверить работу после создания метода сохронения пользователей
      */
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> updateUserImage(@RequestParam MultipartFile image) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        if (userName == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+
         try {
             userService.saveAvatar(image, userName);
             return ResponseEntity.ok().build();
         } catch (IOException ioException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (NotFoundException notFoundException) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 

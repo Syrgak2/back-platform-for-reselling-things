@@ -67,7 +67,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad find(Long id) {
-        return adRepository.findById(id).orElse(null);
+        return adRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     @Override

@@ -14,12 +14,12 @@ import ru.skypro.homework.dto.ads.ExtendedAdDTO;
 import ru.skypro.homework.dto.ads.AdsDTO;
 import ru.skypro.homework.dto.ads.AdDTO;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
-import ru.skypro.homework.exception.NotFoundException;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.model.Ad;
 import ru.skypro.homework.service.AdService;
 
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 
 import java.io.IOException;
 
@@ -30,10 +30,11 @@ public class AdsController {
     private static final Logger log = LoggerFactory.getLogger(AdsController.class);
     private final AdService adService;
 
+
     private final AdMapper adMapper = AdMapper.INSTANCE;
 
 
-    public AdsController(AdService adService, UserService userService) {
+    public AdsController(AdService adService) {
         this.adService = adService;
     }
 
@@ -41,7 +42,6 @@ public class AdsController {
     public ResponseEntity<AdDTO> saveAds(@RequestPart("image") MultipartFile image,
                                           @RequestPart("properties") CreateOrUpdateAdDTO properties) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         try {
             return ResponseEntity.ok(adMapper.adToAdDTO(adService.save(properties, image, authentication.getName())));
         } catch (IOException e) {
@@ -61,11 +61,8 @@ public class AdsController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ExtendedAdDTO> responseAds (@PathVariable Long id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
         ExtendedAdDTO extendedAd = adMapper.adToExtendAd(adService.find(id));
         if (extendedAd == null) {
             return ResponseEntity.notFound().build();
@@ -74,12 +71,8 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.find(id).user.username.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adService.find(#id).user.username.equals(authentication.name)")
     public ResponseEntity<?> deleteAds (@PathVariable Long id){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
         Ad ad = adService.find(id);
 
@@ -93,14 +86,9 @@ public class AdsController {
     }
 
     @PatchMapping("/{id}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.find(id).user.username.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adService.find(#id).user.username.equals(authentication.name)")
     public ResponseEntity<AdDTO> editeAd(@RequestBody CreateOrUpdateAdDTO ad,
                                          @PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
         Ad foundAd = adService.find(id);
 
@@ -112,11 +100,9 @@ public class AdsController {
     }
 
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<AdsDTO> getUserAds () {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
 
         AdsDTO adsDTO = new AdsDTO(adService.getUsersAds(authentication.getName()));
 
@@ -124,15 +110,9 @@ public class AdsController {
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole( 'ADMIN' ) or @adServiceImpl.findAdById(id).author.userName.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) or @adService.find(#id).user.username.equals(authentication.name)")
     public ResponseEntity<byte[]> editeAdImage(@PathVariable Long id,
                                                @RequestParam MultipartFile image) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
         Ad ad = adService.find(id);
 
         if (ad == null) {

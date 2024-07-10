@@ -23,13 +23,11 @@ public class CommentController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper = CommentMapper.INSTANCE;
-    private final UserService userService;
 
 
 
     public CommentController(CommentService commentService, UserService userService) {
         this.commentService = commentService;
-        this.userService = userService;
     }
 
     @Operation(
@@ -67,16 +65,9 @@ public class CommentController {
             tags = "Комментарии"
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole( 'ADMIN' )" )
+    @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.find(commentId).author.username.equals(authentication.name)" )
     public ResponseEntity<?> removeComments(@PathVariable Long adId,
                                             @PathVariable Long commentId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!authentication.isAuthenticated()) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        if (!authentication.getName().equals(userService.findByCommentId(commentId).getUsername())) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
         boolean excepted = commentService.removeComments(adId, commentId);
         if (!excepted) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -88,7 +79,7 @@ public class CommentController {
             tags = "Комментарии"
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    @PreAuthorize("hasRole( 'ADMIN' ) or @commentServiceImpl.find(commentId).author.username.equals(authentication.name)")
+    @PreAuthorize("hasRole( 'ADMIN' ) ")
     public ResponseEntity<CommentDTO> patchComments(@PathVariable Long adId,
                                            @PathVariable Long commentId,
                                            @RequestBody CreateOrUpdateCommentDTO comment){

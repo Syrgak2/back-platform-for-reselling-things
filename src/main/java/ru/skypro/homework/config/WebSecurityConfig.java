@@ -3,7 +3,9 @@ package ru.skypro.homework.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,6 +16,8 @@ import ru.skypro.homework.userDetails.CustomUserDetails;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
 
@@ -39,7 +43,9 @@ public class WebSecurityConfig {
                                         .permitAll()
                                         .mvcMatchers(HttpMethod.GET, "/ads")
                                         .permitAll()
-                                        .mvcMatchers(HttpMethod.POST, "/ads", "/ads/{id}comments")
+                                        .mvcMatchers(HttpMethod.POST, "/ads")
+                                        .hasRole("USER")
+                                        .mvcMatchers(HttpMethod.POST, "/ads/{id}comments")
                                         .hasRole("USER")
                                         .mvcMatchers("/ads/**", "/users/**")
                                         .authenticated())

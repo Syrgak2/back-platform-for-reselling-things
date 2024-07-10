@@ -21,4 +21,10 @@ public class Photo {
     public Photo() {
     }
 
+    public Photo(Long id, long fileSize, String mediaType, byte[] image) {
+        this.id = id;
+        this.fileSize = fileSize;
+        this.mediaType = mediaType;
+        this.image = image;
+    }
 }

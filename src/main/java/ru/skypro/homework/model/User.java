@@ -55,4 +55,14 @@ public class User {
 
     public User() {
     }
+
+    /**
+     * Конструктор для создания течтовых обектов
+     */
+    public User(Long id, String username, String password, String firstName) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+    }
 }

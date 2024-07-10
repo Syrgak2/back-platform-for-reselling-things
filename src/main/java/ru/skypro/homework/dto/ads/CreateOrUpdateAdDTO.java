@@ -17,4 +17,10 @@ public class CreateOrUpdateAdDTO {
 
     public CreateOrUpdateAdDTO() {
     }
+
+    public CreateOrUpdateAdDTO(String title, int price, String description) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+    }
 }
