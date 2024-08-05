@@ -13,11 +13,11 @@
    
 ## Инструкция
 <!--Инструкция-->
-^ Installation
+* Installation
 * Usage
 * Credits
-^License
-*Features
+* License
+* Features
 Installation
 <!--Installation-->
 *Для запуска приложения вам потребуется:
