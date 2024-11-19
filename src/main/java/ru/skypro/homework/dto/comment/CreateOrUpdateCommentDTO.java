@@ -10,4 +10,8 @@ public class CreateOrUpdateCommentDTO {
 
     public CreateOrUpdateCommentDTO() {
     }
+
+    public CreateOrUpdateCommentDTO(String text) {
+        this.text = text;
+    }
 }

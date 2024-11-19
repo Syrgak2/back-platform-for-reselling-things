@@ -2,7 +2,9 @@ package ru.skypro.homework.constants;
 
 import org.springframework.mock.web.MockMultipartFile;
 import ru.skypro.homework.dto.ads.CreateOrUpdateAdDTO;
+import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.model.Ad;
+import ru.skypro.homework.model.Comment;
 import ru.skypro.homework.model.Photo;
 import ru.skypro.homework.model.User;
 
@@ -34,4 +36,8 @@ public class Constants {
     }
 
     public static final User USER = new User(1L, "Test", "Test", "Test");
+
+    public static final Comment COMMENT = new Comment(1L, "Test");
+    public static final CreateOrUpdateCommentDTO CREATE_OR_UPDATE_COMMENT_DTO = new CreateOrUpdateCommentDTO("CREATE_OR_UPDATE_COMMENT_DTO");
 }
+

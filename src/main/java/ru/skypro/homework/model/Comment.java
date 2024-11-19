@@ -29,7 +29,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long id, Long idAuthor, String authorImage, String authorFirstName, String text) {
+    public Comment(Long id, String text) {
         this.id = id;
         this.text = text;
     }

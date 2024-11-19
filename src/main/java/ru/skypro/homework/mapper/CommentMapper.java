@@ -24,4 +24,6 @@ public interface CommentMapper {
 
 
     Comment createOrUpdateToComment(CreateOrUpdateCommentDTO createOrUpdateCommentDTO);
+
+    CreateOrUpdateCommentDTO toCreateOrUpdateDTO(Comment comment);
 }
